@@ -138,11 +138,7 @@ def cli(**args):
                 o += click.style(decorate(title, style=state), bold=True) + "\n"
                 o += decorate(str(text).strip(), style='quote-' + state)
 
-                if args['stdout_inline']:
-                    echo(o)
-                    if state == 'pass':
-                        echo('')
-                else:
+                if not args['stdout_inline']:
                     shakedown.stdout.append(o)
 
 
@@ -285,6 +281,9 @@ def cli(**args):
 
     if args['path']:
         opts.append(' '.join(args['path']))
+
+    if args['stdout_inline']:
+        opts.append('-s')
 
     exitstatus = imported['pytest'].main(' '.join(opts), plugins=[shakedown()])
 
